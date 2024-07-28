@@ -39,11 +39,11 @@ message CreateUserDto {
 
 message User {
   string id = 1;
-  string username = 2;
-  string password = 3;
-  int32 age = 4;
-  bool subscribed = 5;
-  SocialMedia socialMedia = 6;
+  string email  = 2;
+  string firstName = 3;
+  string lastName = 4;
+  string fullName = 5;
+  string password = 6;
 }
 
 message SocialMedia {
