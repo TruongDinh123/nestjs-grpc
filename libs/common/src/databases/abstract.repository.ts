@@ -1,7 +1,7 @@
 import { Model, Types, FilterQuery, UpdateQuery } from 'mongoose';
-import { AbstractDocument } from './abstract.schema';
 import { GrpcException } from '../exceptions/rpc-exception';
 import { HttpStatus } from '@nestjs/common';
+import { AbstractDocument } from './abstract.schema';
 
 export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   constructor(protected readonly model: Model<TDocument>) {}
@@ -71,5 +71,9 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
 
   async find(filterQuery: FilterQuery<TDocument>): Promise<TDocument[]> {
     return await this.model.find(filterQuery).lean<TDocument[]>(true);
+  }
+
+  async findOneAndDelete(filterQuery: FilterQuery<TDocument>) {
+    return await this.model.findOneAndDelete(filterQuery).lean<TDocument>(true);
   }
 }
