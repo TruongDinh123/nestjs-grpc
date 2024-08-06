@@ -7,11 +7,11 @@ COPY yarn.lock ./
 COPY tsconfig.json tsconfig.json
 COPY nest-cli.json nest-cli.json
  
-COPY apps/auth apps/auth
+COPY apps/api-gateway apps/api-gateway
 COPY libs libs
  
 RUN yarn install
  
-RUN yarn build auth
+RUN yarn build api-gateway
  
-CMD ["node", "dist/apps/src/auth/main"]
+CMD ["node", "dist/apps/src/api-gateway/main"]
