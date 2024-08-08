@@ -23,12 +23,8 @@ services:
       - .:/usr/src/app
     depends_on:
       - mongo
+    ports:
+      - '5000:5000'
 
   mongo:
     image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
-    ports:
-      - '27017:27017'

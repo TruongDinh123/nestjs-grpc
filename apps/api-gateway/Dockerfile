@@ -6,6 +6,7 @@ COPY package.json ./
 COPY yarn.lock ./
 COPY tsconfig.json tsconfig.json
 COPY nest-cli.json nest-cli.json
+COPY proto proto
  
 COPY apps/api-gateway apps/api-gateway
 COPY libs libs
