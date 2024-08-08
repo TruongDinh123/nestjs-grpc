@@ -8,11 +8,11 @@ COPY tsconfig.json tsconfig.json
 COPY nest-cli.json nest-cli.json
 COPY proto proto
  
-COPY apps/auth apps/auth
+COPY apps/api-gateway apps/api-gateway
 COPY libs libs
  
 RUN yarn install
  
-RUN yarn build auth
-
-CMD ["node", "dist/apps/src/auth/main"]
+RUN yarn build api-gateway
+ 
+CMD ["node", "dist/apps/src/api-gateway/main"]
