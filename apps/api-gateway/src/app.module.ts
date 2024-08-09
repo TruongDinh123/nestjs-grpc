@@ -6,7 +6,11 @@ import * as Joi from 'joi';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      validationSchema: Joi.object({}),
+      isGlobal: true,
+      validationSchema: Joi.object({
+        GRPC_CONNECTION_URL: Joi.string().required(),
+        GATEWAY_CONNECTION_URL: Joi.string().required(),
+      }),
     }),
     UsersModule,
   ],

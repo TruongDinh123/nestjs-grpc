@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       validationSchema: Joi.object({
         MONGO_URI: Joi.string().required(),
+        GRPC_CONNECTION_URL: Joi.string().required(),
       }),
     }),
   ],
