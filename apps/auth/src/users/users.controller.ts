@@ -7,6 +7,8 @@ import {
   UsersServiceControllerMethods,
   FindOneUserDto,
   PaginationDto,
+  LoginDto,
+  User,
 } from '@app/common';
 import { Observable } from 'rxjs';
 
@@ -14,6 +16,10 @@ import { Observable } from 'rxjs';
 @UsersServiceControllerMethods()
 export class UsersController implements UsersServiceController {
   constructor(private readonly usersService: UsersService) {}
+
+  login(request: LoginDto): User {
+    return this.usersService.login(request);
+  }
 
   createUser(createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);

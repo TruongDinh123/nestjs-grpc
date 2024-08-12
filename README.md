@@ -1,5 +1,4 @@
-npx protoc --plugin=protoc-gen-ts_proto=".\\node_modules\\.bin\\protoc-gen-ts_proto.cmd"
---ts_proto_out=./ --ts_proto_opt=nestJs=true ./proto/auth.proto
+npx protoc --plugin=protoc-gen-ts_proto=".\\node_modules\\.bin\\protoc-gen-ts_proto.cmd" --ts_proto_out=./ --ts_proto_opt=nestJs=true ./proto/auth.proto
 
 nest generated apps auth
 
@@ -8,39 +7,39 @@ In general, the request lifecycle looks like the following:
 1.Incoming request
 
 2.Middleware
-    2.1. Globally bound middleware
-    2.2. Module bound middleware
+2.1. Globally bound middleware
+2.2. Module bound middleware
 
 3.Guards
-    3.1 Global guards
-    3.2 Controller guards
-    3.3 Route guards
+3.1 Global guards
+3.2 Controller guards
+3.3 Route guards
 
 4.Interceptors (pre-controller)
-    4.1 Global interceptors
-    4.2 Controller interceptors
-    4.3 Route interceptors
+4.1 Global interceptors
+4.2 Controller interceptors
+4.3 Route interceptors
 
 5.Pipes
-    5.1 Global pipes
-    5.2 Controller pipes
-    5.3 Route pipes
-    5.4 Route parameter pipes
+5.1 Global pipes
+5.2 Controller pipes
+5.3 Route pipes
+5.4 Route parameter pipes
 
 6.Controller (method handler)
 
 7.Service (if exists)
 
 8.Interceptors (post-request)
-    8.1 Route interceptor
-    8.2 Controller interceptor
-    8.3 Global interceptor
+8.1 Route interceptor
+8.2 Controller interceptor
+8.3 Global interceptor
 
 9.Exception filters
-    9.1 route
-    9.2 controller
-    9.3 global
-    
+9.1 route
+9.2 controller
+9.3 global
+
 10.Server response
 
 1. @Controller() decorator:
@@ -74,4 +73,13 @@ In general, the request lifecycle looks like the following:
 
    - Entity là 1 class sẽ máp tới database table bằng cách sử dụng @Entoty() decorator
 
-7 Repository: - Dùng để quản lí cụ thể các entity. - Repository nó có thể multiple các funtions và tương tác với entities bằng cách sử dụng lại TypeOrmModule
+7. Repository:
+
+   - Dùng để quản lí cụ thể các entity.
+   - Repository nó có thể multiple các funtions và tương tác với entities bằng cách sử dụng lại TypeOrmModule
+
+8. AbstractRepository:
+   - Cung cấp các phương thức cơ bản cho việc tương tác với database
+   - Tái sử dụng mã: cung cấp các method: create, findOne, find.... Giúp giảm thiểu
+     mã lặp lại trong các repository cụ thể.
+   - Tính trừu tượng: cho phép các class kế thừa và mở rộng mà không cần viết lại logic cơ bản
