@@ -6,28 +6,22 @@ import {
   Users,
   PaginationDto,
 } from '@app/common';
-import { randomUUID } from 'crypto';
 import { Observable, Subject } from 'rxjs';
+import { LoginDto } from '../dto/login.dto';
 
 @Injectable()
 export class UsersService implements OnModuleInit {
   private readonly users: User[] = [];
 
-  onModuleInit() {
-    for (let i = 0; i <= 100; i++) {
-      this.create({ username: randomUUID(), password: randomUUID(), age: 0 });
-    }
+  onModuleInit() {}
+
+  login(loginDto: LoginDto): User {
+    return;
   }
 
   create(createUserDto: CreateUserDto): User {
-    const user: User = {
-      ...createUserDto,
-      subscribed: false,
-      socialMedia: {},
-      id: randomUUID(),
-    };
-    this.users.push(user);
-    return user;
+    // TODO: create user
+    return;
   }
 
   findAll(): Users {
