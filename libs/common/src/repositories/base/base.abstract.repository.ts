@@ -1,10 +1,15 @@
 import { Model, Types, FilterQuery, UpdateQuery } from 'mongoose';
-import { GrpcException } from '../exceptions/rpc-exception';
 import { HttpStatus } from '@nestjs/common';
-import { AbstractDocument } from './abstract.schema';
+import { AbstractDocument } from '@app/common/databases';
+import { GrpcException } from '@app/common/exceptions/rpc-exception';
+import { BaseRepositoryInterface } from './base.interface.repository';
 
-export abstract class AbstractRepository<TDocument extends AbstractDocument> {
-  constructor(protected readonly model: Model<TDocument>) {}
+export abstract class BaseRepositoryAbstract<TDocument extends AbstractDocument>
+  implements BaseRepositoryInterface<TDocument>
+{
+  constructor(protected readonly model: Model<TDocument>) {
+    this.model = model;
+  }
 
   /*
     - Omit là một extendsion trong TypeScript để tạo mới một kiểu mới bằng cách loại bỏ các
