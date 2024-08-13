@@ -15,11 +15,6 @@ export interface PaginationDto {
   skip: number;
 }
 
-export interface UpdateUserDto {
-  id: string;
-  socialMedia: SocialMedia | undefined;
-}
-
 export interface FindOneUserDto {
   id: string;
 }
@@ -34,6 +29,9 @@ export interface Users {
 export interface CreateUserDto {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 }
 
 export interface LoginDto {
@@ -42,11 +40,10 @@ export interface LoginDto {
 }
 
 export interface User {
-  id: string;
+  id?: string | undefined;
   email: string;
   firstName: string;
   lastName: string;
-  fullName: string;
   password: string;
   currentHashedRefreshToken?: string | undefined;
 }
@@ -67,8 +64,6 @@ export interface UsersServiceClient {
 
   findOneUser(request: FindOneUserDto): Observable<User>;
 
-  updateUser(request: UpdateUserDto): Observable<User>;
-
   removeUser(request: FindOneUserDto): Observable<User>;
 
   queryUsers(request: Observable<PaginationDto>): Observable<Users>;
@@ -83,8 +78,6 @@ export interface UsersServiceController {
 
   findOneUser(request: FindOneUserDto): Promise<User> | Observable<User> | User;
 
-  updateUser(request: UpdateUserDto): Promise<User> | Observable<User> | User;
-
   removeUser(request: FindOneUserDto): Promise<User> | Observable<User> | User;
 
   queryUsers(request: Observable<PaginationDto>): Observable<Users>;
@@ -92,7 +85,7 @@ export interface UsersServiceController {
 
 export function UsersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createUser", "login", "findAllUsers", "findOneUser", "updateUser", "removeUser"];
+    const grpcMethods: string[] = ["createUser", "login", "findAllUsers", "findOneUser", "removeUser"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UsersService", method)(constructor.prototype[method], method, descriptor);

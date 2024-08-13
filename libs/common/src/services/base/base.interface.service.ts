@@ -1,5 +1,5 @@
 export interface Write<T> {
-  create(item: T): Promise<T>;
+  create(document: Omit<T, '_id'>): Promise<T>;
   update(id: string, item: T): Promise<T>;
 }
 

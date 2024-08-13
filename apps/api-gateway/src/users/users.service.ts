@@ -3,7 +3,6 @@ import {
   CreateUserDto,
   PaginationDto,
   USERS_SERVICE_NAME,
-  UpdateUserDto,
   UsersServiceClient,
 } from '@app/common';
 import { AUTH_SERVICE } from './constants';
@@ -31,10 +30,6 @@ export class UsersService implements OnModuleInit {
 
   findOne(id: string) {
     return this.usersService.findOneUser({ id });
-  }
-
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser({ id, ...updateUserDto });
   }
 
   remove(id: string) {

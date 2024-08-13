@@ -2,8 +2,6 @@ import { Controller } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
   UsersServiceController,
-  CreateUserDto,
-  UpdateUserDto,
   UsersServiceControllerMethods,
   FindOneUserDto,
   PaginationDto,
@@ -11,6 +9,8 @@ import {
   User,
 } from '@app/common';
 import { Observable } from 'rxjs';
+import RegisterDto from '../dto/register.dto';
+import { Payload } from '@nestjs/microservices';
 
 @Controller()
 @UsersServiceControllerMethods()
@@ -21,8 +21,9 @@ export class UsersController implements UsersServiceController {
     return this.usersService.login(request);
   }
 
-  createUser(createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async createUser(@Payload() createUserDto: RegisterDto): Promise<User> {
+    const newUser = await this.usersService.register(createUserDto);
+    return newUser;
   }
 
   findAllUsers() {
@@ -31,10 +32,6 @@ export class UsersController implements UsersServiceController {
 
   findOneUser(findOneUserDto: FindOneUserDto) {
     return this.usersService.findOne(findOneUserDto.id);
-  }
-
-  updateUser(updateUserDto: UpdateUserDto) {
-    return this.usersService.update(updateUserDto.id, updateUserDto);
   }
 
   removeUser(findOneUserDto: FindOneUserDto) {
