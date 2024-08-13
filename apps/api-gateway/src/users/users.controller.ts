@@ -1,22 +1,22 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from '@app/common';
+import { CreateUserDto, User } from '@app/common';
+import { ICustomResponse } from '../interfaces/custom-response.interface';
+import { lastValueFrom } from 'rxjs';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<ICustomResponse<User>> {
+    const result = await lastValueFrom(this.usersService.create(createUserDto));
+    return {
+      message: 'Đăng kí thành công',
+      result: result,
+    };
   }
 
   @Get()
@@ -27,11 +27,6 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
