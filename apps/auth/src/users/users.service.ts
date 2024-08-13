@@ -5,22 +5,22 @@ import {
   UpdateUserDto,
   Users,
   PaginationDto,
+  BaseServiceAbstract,
+  UserDocument,
 } from '@app/common';
 import { Observable, Subject } from 'rxjs';
 import { LoginDto } from '../dto/login.dto';
 
 @Injectable()
-export class UsersService implements OnModuleInit {
+export class UsersService
+  extends BaseServiceAbstract<UserDocument>
+  implements OnModuleInit
+{
   private readonly users: User[] = [];
 
   onModuleInit() {}
 
   login(loginDto: LoginDto): User {
-    return;
-  }
-
-  create(createUserDto: CreateUserDto): User {
-    // TODO: create user
     return;
   }
 
@@ -30,19 +30,6 @@ export class UsersService implements OnModuleInit {
 
   findOne(id: string): User {
     return this.users.find((user) => user.id === id);
-  }
-
-  update(id: string, updateUserDto: UpdateUserDto): User {
-    console.log(updateUserDto);
-    const userIndex = this.users.findIndex((user) => user.id === id);
-    if (userIndex !== -1) {
-      this.users[userIndex] = {
-        ...this.users[userIndex],
-        ...updateUserDto,
-      };
-      return this.users[userIndex];
-    }
-    throw new NotFoundException(`User not found by id ${id}.`);
   }
 
   remove(id: string) {

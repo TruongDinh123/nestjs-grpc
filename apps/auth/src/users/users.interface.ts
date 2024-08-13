@@ -1,4 +1,4 @@
-import { AbstractRepository, UserDocument } from '@app/common';
+import { BaseRepositoryInterface, UserDocument } from '@app/common';
 
 export interface UsersRepositoryInterface
-  extends AbstractRepository<UserDocument> {}
+  extends BaseRepositoryInterface<UserDocument> {}
