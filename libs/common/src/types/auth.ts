@@ -16,7 +16,7 @@ export interface PaginationDto {
 }
 
 export interface FindOneUserDto {
-  id: string;
+  id: number;
 }
 
 export interface Empty {
@@ -40,7 +40,7 @@ export interface LoginDto {
 }
 
 export interface User {
-  id?: string | undefined;
+  id: number;
   email: string;
   firstName: string;
   lastName: string;

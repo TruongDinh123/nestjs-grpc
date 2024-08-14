@@ -1,21 +1,23 @@
-import { Model, Types, FilterQuery, UpdateQuery } from 'mongoose';
 import { HttpStatus } from '@nestjs/common';
-import { AbstractDocument } from '@app/common/databases';
 import { GrpcException } from '@app/common/exceptions/rpc-exception';
 import { BaseRepositoryInterface } from './base.interface.repository';
+import { DeepPartial, FindOneOptions, Repository } from 'typeorm';
 
-export abstract class BaseRepositoryAbstract<TDocument extends AbstractDocument>
+export interface HasId {
+  id: number;
+}
+export abstract class BaseRepositoryAbstract<TDocument extends HasId>
   implements BaseRepositoryInterface<TDocument>
 {
-  constructor(protected readonly model: Model<TDocument>) {
-    this.model = model;
+  constructor(protected readonly repository: Repository<TDocument>) {
+    this.repository = repository;
   }
 
   /*
     - Omit là một extendsion trong TypeScript để tạo mới một kiểu mới bằng cách loại bỏ các
     thuộc tính được chỉ định kiểu khác. Trong trường hợp:
     
-    Omit<TDocument, '_id'>: loại bỏ thuộc tính '_id' khỏi kiểu TDocument.
+    Omit<TDocument, 'id'>: loại bỏ thuộc tính 'id' khỏi kiểu TDocument.
 
     - TDocument là một kiểu tổng quát (generic type) trong Typesript
     được sử dụng để định nghĩa kiểu của các tài liệu mà repository sẽ làm việc.
@@ -24,12 +26,8 @@ export abstract class BaseRepositoryAbstract<TDocument extends AbstractDocument>
     tính được định nghĩa trong AbstractDocument.
 
 */
-  async create(document: Omit<TDocument, '_id'>): Promise<TDocument> {
-    const createdDocument = new this.model({
-      ...document,
-      _id: new Types.ObjectId(),
-    });
-    return (await createdDocument.save()).toJSON() as TDocument;
+  async create(data: DeepPartial<TDocument>): Promise<TDocument> {
+    return await this.repository.create(data);
   }
 
   /*
@@ -41,10 +39,8 @@ export abstract class BaseRepositoryAbstract<TDocument extends AbstractDocument>
     sự chậm trễ overhead của việc tạo ra instance.
   -
   */
-  async findOne(filterQuery: FilterQuery<TDocument>): Promise<TDocument> {
-    const document = await this.model
-      .findOne(filterQuery)
-      .lean<TDocument>(true); // true để trả về object thuần túy với kiểu dữ liệu là TDocument
+  async findOne(filterQuery: FindOneOptions<TDocument>): Promise<TDocument> {
+    const document = await this.repository.findOne(filterQuery);
 
     if (!document) {
       throw new GrpcException({
@@ -56,14 +52,16 @@ export abstract class BaseRepositoryAbstract<TDocument extends AbstractDocument>
   }
 
   async findOneAndUpdate(
-    filterQuery: FilterQuery<TDocument>,
-    update: UpdateQuery<TDocument>,
-  ) {
-    const document = await this.model
-      .findOneAndUpdate(filterQuery, update, {
-        new: true, // trả về document mới nhất
-      })
-      .lean<TDocument>(true);
+    filterQuery: FindOneOptions<TDocument>, // Sử dụng FindOneOptions
+    update: DeepPartial<TDocument>, // Sử dụng DeepPartial
+  ): Promise<TDocument> {
+    // Thêm kiểu trả về
+    const document = await this.repository.preload({
+      // Sử dụng preload để cập nhật
+      // preload là những dữ liệu mà bạn muốn cập nhật cho một document
+      ...filterQuery,
+      ...update,
+    });
 
     if (!document) {
       throw new GrpcException({
@@ -71,14 +69,17 @@ export abstract class BaseRepositoryAbstract<TDocument extends AbstractDocument>
         message: 'Document not found with filter query',
       });
     }
-    return document;
+    return await this.repository.save(document);
   }
 
-  async find(filterQuery: FilterQuery<TDocument>): Promise<TDocument[]> {
-    return await this.model.find(filterQuery).lean<TDocument[]>(true);
+  async find(filterQuery: FindOneOptions<TDocument>): Promise<TDocument[]> {
+    return await this.repository.find(filterQuery);
   }
 
-  async findOneAndDelete(filterQuery: FilterQuery<TDocument>) {
-    return await this.model.findOneAndDelete(filterQuery).lean<TDocument>(true);
+  async findOneAndDelete(
+    filterQuery: FindOneOptions<TDocument>,
+  ): Promise<TDocument> {
+    const document = await this.findOne(filterQuery);
+    return await this.repository.remove(document);
   }
 }

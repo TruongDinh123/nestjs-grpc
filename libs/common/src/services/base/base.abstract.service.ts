@@ -1,21 +1,12 @@
-import { AbstractDocument } from '@app/common/databases';
 import { BaseServiceInterface } from './base.interface.service';
-import { BaseRepositoryInterface } from '@app/common/repositories';
-
-export abstract class BaseServiceAbstract<T extends AbstractDocument>
+import { BaseRepositoryInterface, HasId } from '@app/common/repositories';
+import { DeepPartial } from 'typeorm';
+export abstract class BaseServiceAbstract<T extends HasId>
   implements BaseServiceInterface<T>
 {
   constructor(private readonly repository: BaseRepositoryInterface<T>) {}
 
-  async create(document: Omit<T, '_id'>): Promise<T> {
+  async create(document: DeepPartial<T>): Promise<T> {
     return await this.repository.create(document);
-  }
-
-  async update(id: string, document: T): Promise<T> {
-    return await this.repository.findOneAndUpdate({ _id: id }, document);
-  }
-
-  async find(item: T): Promise<T[]> {
-    return await this.repository.find(item);
   }
 }

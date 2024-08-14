@@ -28,11 +28,11 @@ export class UsersService implements OnModuleInit {
     return this.usersService.findAllUsers({});
   }
 
-  findOne(id: string) {
+  findOne(id: number) {
     return this.usersService.findOneUser({ id });
   }
 
-  remove(id: string) {
+  remove(id: number) {
     return this.usersService.removeUser({ id });
   }
 
