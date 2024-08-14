@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, User } from '@app/common';
+import { RegisterDto, User } from '@app/common';
 import { ICustomResponse } from '../interfaces/custom-response.interface';
 import { lastValueFrom } from 'rxjs';
 
@@ -10,7 +10,7 @@ export class UsersController {
 
   @Post()
   async create(
-    @Body() createUserDto: CreateUserDto,
+    @Body() createUserDto: RegisterDto,
   ): Promise<ICustomResponse<User>> {
     const result = await lastValueFrom(this.usersService.create(createUserDto));
     return {
@@ -25,12 +25,12 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.usersService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.usersService.remove(id);
   }
 

@@ -5,7 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
@@ -13,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
         GRPC_CONNECTION_URL: Joi.string().required(),
       }),
     }),
+    UsersModule,
   ],
   controllers: [],
   providers: [],

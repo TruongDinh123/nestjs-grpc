@@ -7,10 +7,9 @@ import {
   PaginationDto,
   LoginDto,
   User,
+  RegisterDto,
 } from '@app/common';
 import { Observable } from 'rxjs';
-import RegisterDto from '../dto/register.dto';
-import { Payload } from '@nestjs/microservices';
 
 @Controller()
 @UsersServiceControllerMethods()
@@ -21,7 +20,7 @@ export class UsersController implements UsersServiceController {
     return this.usersService.login(request);
   }
 
-  async createUser(@Payload() createUserDto: RegisterDto): Promise<User> {
+  async createUser(createUserDto: RegisterDto): Promise<User> {
     const newUser = await this.usersService.register(createUserDto);
     return newUser;
   }

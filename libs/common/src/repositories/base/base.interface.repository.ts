@@ -1,16 +1,16 @@
-import { FilterQuery, UpdateQuery } from 'mongoose';
+import { DeepPartial, FindOneOptions } from 'typeorm';
 
 export interface BaseRepositoryInterface<T> {
-  create(document: Omit<T, '_id'>): Promise<T>;
+  create(data: DeepPartial<T>): Promise<T>;
 
-  findOne(filterQuery: FilterQuery<T>): Promise<T>;
+  findOne(filterQuery: FindOneOptions<T>): Promise<T>;
 
   findOneAndUpdate(
-    filterQuery: FilterQuery<T>,
-    update: UpdateQuery<T>,
+    filterQuery: FindOneOptions<T>,
+    update: DeepPartial<T>,
   ): Promise<T>;
 
-  find(filterQuery: FilterQuery<T>): Promise<T[]>;
+  find(filterQuery: FindOneOptions<T>): Promise<T[]>;
 
-  findOneAndDelete(filterQuery: FilterQuery<T>): Promise<T>;
+  findOneAndDelete(filterQuery: FindOneOptions<T>): Promise<T>;
 }

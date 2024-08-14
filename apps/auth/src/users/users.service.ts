@@ -9,18 +9,18 @@ import {
   Users,
   PaginationDto,
   BaseServiceAbstract,
-  UserDocument,
   GrpcException,
+  RegisterDto,
+  UsersRepositoryInterface,
 } from '@app/common';
 import { Observable, Subject } from 'rxjs';
 import { LoginDto } from '../dto/login.dto';
-import RegisterDto from '../dto/register.dto';
 import * as bcrypt from 'bcrypt';
-import { UsersRepositoryInterface } from './users.interface';
+import UserEntity from '@app/common/entities/user.entity';
 
 @Injectable()
 export class UsersService
-  extends BaseServiceAbstract<UserDocument>
+  extends BaseServiceAbstract<UserEntity>
   implements OnModuleInit
 {
   constructor(
@@ -40,7 +40,7 @@ export class UsersService
         ...registerDto,
         password: hashedPassword,
       });
-      return createdUser; // Đảm bảo rằng createdUser là một đối tượng UserDocument hợp lệ
+      return createdUser;
     } catch (error) {
       throw new GrpcException({
         status: 400,
@@ -48,6 +48,10 @@ export class UsersService
         error: error.message,
       });
     }
+  }
+
+  public async findByEmail(email: string): Promise<User> {
+    return await this.users_repository.findOneByEmail(email);
   }
 
   login(loginDto: LoginDto): User {
@@ -58,11 +62,11 @@ export class UsersService
     return { users: this.users };
   }
 
-  findOne(id: string): User {
+  findOne(id: number): User {
     return this.users.find((user) => user.id === id);
   }
 
-  remove(id: string) {
+  remove(id: number) {
     const userIndex = this.users.findIndex((user) => user.id === id);
     if (userIndex !== -1) {
       return this.users.splice(userIndex)[0];
