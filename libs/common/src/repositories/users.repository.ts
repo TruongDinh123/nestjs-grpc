@@ -21,3 +21,8 @@ export class UsersRepository
     return await this.users_repository.findOne({ where: { email } });
   }
 }
+
+/*
+  1. Repository này xử lý các thao tác trực tiếp 
+  với cơ sở dữ liệu cho đối tượng `UserEntity`, như tìm kiếm người dùng theo email.
+*/
