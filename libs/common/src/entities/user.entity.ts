@@ -18,7 +18,7 @@ class UserEntity {
   @Column({ nullable: true })
   public phoneNumber?: string;
 
-  @Column()
+  @Column({ nullable: true })
   public name: string;
 
   @Column({ nullable: true })

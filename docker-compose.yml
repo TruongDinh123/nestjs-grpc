@@ -12,8 +12,10 @@ services:
       - .env
     ports:
       - '${PORT}:${PORT}'
+    depends_on:
+      - postgres
     networks:
-      - my-network
+      - postgres
 
   auth:
     build:
@@ -27,24 +29,36 @@ services:
       - .env
     ports:
       - '5000:5000'
+    depends_on:
+      - postgres
     networks:
-      - my-network
+      - postgres
 
   mongodb:
     image: mongo
     ports:
       - '27017:27017'
-    networks:
-      - my-network
-  
+
   postgres:
-    image: postgres
-    env_file:
-      - .env
+    image: postgres:latest
     ports:
-      - '5432:5432'
+      - '5433:5432'
     volumes:
-      - ./db/data:/var/lib/postgresql/data
+      - type: bind
+        source: ./db
+        target: /var/lib/postgresql/data
+    env_file:
+      - docker.env
+    networks:
+      - postgres
+    command:
+      - 'postgres'
+      - '-c'
+      - 'track_commit_timestamp=on'
+      - '-c'
+      - 'log_destination=stderr'
 
 networks:
-  my-network: {}
+  postgres:
+    driver: bridge
+

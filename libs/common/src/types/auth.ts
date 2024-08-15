@@ -26,6 +26,12 @@ export interface Users {
   users: User[];
 }
 
+export interface UserAndToken {
+  user: User | undefined;
+  accessTokenCookie: string;
+  refreshTokenCookie: string;
+}
+
 export interface CreateUserDto {
   email: string;
   password: string;
@@ -58,7 +64,7 @@ export const AUTH_PACKAGE_NAME = "auth";
 export interface UsersServiceClient {
   createUser(request: CreateUserDto): Observable<User>;
 
-  login(request: LoginDto): Observable<User>;
+  login(request: LoginDto): Observable<UserAndToken>;
 
   findAllUsers(request: Empty): Observable<Users>;
 
@@ -72,7 +78,7 @@ export interface UsersServiceClient {
 export interface UsersServiceController {
   createUser(request: CreateUserDto): Promise<User> | Observable<User> | User;
 
-  login(request: LoginDto): Promise<User> | Observable<User> | User;
+  login(request: LoginDto): Promise<UserAndToken> | Observable<UserAndToken> | UserAndToken;
 
   findAllUsers(request: Empty): Promise<Users> | Observable<Users> | Users;
 

@@ -27,7 +27,12 @@ export abstract class BaseRepositoryAbstract<TDocument extends HasId>
 
 */
   async create(data: DeepPartial<TDocument>): Promise<TDocument> {
-    return await this.repository.create(data);
+    const createdDocument = await this.repository.create(data);
+    return await this.repository.save(createdDocument);
+  }
+
+  public async preload(entityLike: DeepPartial<TDocument>): Promise<TDocument> {
+    return await this.repository.preload(entityLike);
   }
 
   /*
@@ -39,8 +44,8 @@ export abstract class BaseRepositoryAbstract<TDocument extends HasId>
     sự chậm trễ overhead của việc tạo ra instance.
   -
   */
-  async findOne(filterQuery: FindOneOptions<TDocument>): Promise<TDocument> {
-    const document = await this.repository.findOne(filterQuery);
+  async findOneBy(filterQuery: FindOneOptions<TDocument>): Promise<TDocument> {
+    const document = await this.repository.findOneBy(filterQuery.where);
 
     if (!document) {
       throw new GrpcException({
@@ -79,7 +84,7 @@ export abstract class BaseRepositoryAbstract<TDocument extends HasId>
   async findOneAndDelete(
     filterQuery: FindOneOptions<TDocument>,
   ): Promise<TDocument> {
-    const document = await this.findOne(filterQuery);
+    const document = await this.findOneBy(filterQuery);
     return await this.repository.remove(document);
   }
 }

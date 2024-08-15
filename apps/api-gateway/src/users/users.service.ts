@@ -1,6 +1,7 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import {
   CreateUserDto,
+  LoginDto,
   PaginationDto,
   USERS_SERVICE_NAME,
   UsersServiceClient,
@@ -18,6 +19,10 @@ export class UsersService implements OnModuleInit {
   onModuleInit() {
     this.usersService =
       this.client.getService<UsersServiceClient>(USERS_SERVICE_NAME);
+  }
+
+  login(loginDto: LoginDto) {
+    return this.usersService.login(loginDto);
   }
 
   create(createUserDto: CreateUserDto) {

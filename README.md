@@ -100,3 +100,15 @@ global
 21. UsersRepository:
 
 - UsersRepository sẽ implements UserRepositoryInterface và kế thừa các logic UsersRepositoryInterface
+
+22. Repositorty Pattern:
+
+- **Trách nhiệm**: Trực tiếp tương tác với cơ sở dữ liệu. Repository chịu trách nhiệm cho việc truy vấn dữ liệu và ánh xạ dữ liệu từ và đến cơ sở dữ liệu.
+
+- **Khi nào sử dụng**: Khi bạn cần thực hiện các thao tác cơ bản liên quan đến cơ sở dữ liệu như tạo, đọc, cập nhật, và xóa (CRUD). Repository cung cấp một giao diện trừu tượng để tách biệt logic nghiệp vụ khỏi logic truy cập dữ liệu.
+
+23. Service Pattern
+
+- **Trách nhiệm**: Xử lý logic nghiệp vụ. Service là nơi bạn định nghĩa các quy trình và luồng xử lý dữ liệu, gọi các Repository để lấy dữ liệu và sau đó áp dụng các quy tắc nghiệp vụ.
+
+- **Khi nào sử dụng**: Khi bạn cần thực hiện các tác vụ phức tạp hơn là chỉ truy vấn dữ liệu. Ví dụ, khi bạn cần thực hiện các tác vụ liên quan đến nhiều bảng, thực hiện các phép tính, hoặc khi bạn cần đảm bảo rằng dữ liệu đáp ứng các ràng buộc và quy tắc nghiệp vụ trước khi lưu trữ.
