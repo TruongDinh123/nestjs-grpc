@@ -28,11 +28,16 @@ export abstract class BaseRepositoryAbstract<TDocument extends HasId>
 */
   async create(data: DeepPartial<TDocument>): Promise<TDocument> {
     const createdDocument = await this.repository.create(data);
-    return await this.repository.save(createdDocument);
+    return await this.save(createdDocument);
+  }
+
+  async save(document: TDocument): Promise<TDocument> {
+    return await this.repository.save(document);
   }
 
   public async preload(entityLike: DeepPartial<TDocument>): Promise<TDocument> {
-    return await this.repository.preload(entityLike);
+    const document = await this.repository.preload(entityLike);
+    return await this.save(document);
   }
 
   /*

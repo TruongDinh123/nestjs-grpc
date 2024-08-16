@@ -6,6 +6,7 @@ import { AUTH_SERVICE } from './constants';
 import { AUTH_PACKAGE_NAME } from '@app/common';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, JwtService],
 })
 export class UsersModule {}

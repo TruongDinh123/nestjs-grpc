@@ -101,25 +101,42 @@ export class UsersService
   }
 
   async getUserIfRefreshTokenMatches(refreshToken: string, userId: number) {
+    console.log('🚀 ~ userId:', userId);
+    console.log('🚀 ~ refreshToken:', refreshToken);
     const user = await this.getById(userId);
+    console.log('🚀 ~ user:', user);
+
+    if (!user.currentHashedRefreshToken) {
+      console.error('No current hashed refresh token available for user.');
+      return null; // or handle this case as needed
+    }
 
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.currentHashedRefreshToken,
     );
+    console.log('🚀 ~ isRefreshTokenMatching:', isRefreshTokenMatching);
 
     if (isRefreshTokenMatching) {
       return user;
+    } else {
+      console.error('Refresh token does not match.');
+      return null; // or handle this case as needed
     }
   }
 
   async setCurrentRefreshToken(refreshToken: string, userId: number) {
+    console.log('🚀 ~ refreshToken:', refreshToken);
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-    // const user = await this.findOneBy({ where: { id: userId } });
+    console.log('🚀 ~ currentHashedRefreshToken:', currentHashedRefreshToken);
 
-    // if (user) {
-    // }
-    await this.preload({ id: userId, currentHashedRefreshToken });
+    const user = await this.preload({
+      id: userId,
+      currentHashedRefreshToken,
+    });
+    if (user) {
+      user.currentHashedRefreshToken = currentHashedRefreshToken;
+    }
   }
 
   public async getById(id: number) {

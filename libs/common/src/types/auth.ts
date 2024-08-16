@@ -5,6 +5,7 @@
 // source: proto/auth.proto
 
 /* eslint-disable */
+import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
@@ -30,6 +31,11 @@ export interface UserAndToken {
   user: User | undefined;
   accessTokenCookie: string;
   refreshTokenCookie: string;
+}
+
+export interface ResRefreshToken {
+  user: User | undefined;
+  accessTokenCookie: string;
 }
 
 export interface CreateUserDto {
@@ -62,36 +68,48 @@ export interface SocialMedia {
 export const AUTH_PACKAGE_NAME = "auth";
 
 export interface UsersServiceClient {
-  createUser(request: CreateUserDto): Observable<User>;
+  createUser(request: CreateUserDto, metadata: Metadata, ...rest: any): Observable<User>;
 
-  login(request: LoginDto): Observable<UserAndToken>;
+  login(request: LoginDto, metadata: Metadata, ...rest: any): Observable<UserAndToken>;
 
-  findAllUsers(request: Empty): Observable<Users>;
+  refreshToken(request: Empty, metadata: Metadata, ...rest: any): Observable<ResRefreshToken>;
 
-  findOneUser(request: FindOneUserDto): Observable<User>;
+  findAllUsers(request: Empty, metadata: Metadata, ...rest: any): Observable<Users>;
 
-  removeUser(request: FindOneUserDto): Observable<User>;
+  findOneUser(request: FindOneUserDto, metadata: Metadata, ...rest: any): Observable<User>;
 
-  queryUsers(request: Observable<PaginationDto>): Observable<Users>;
+  removeUser(request: FindOneUserDto, metadata: Metadata, ...rest: any): Observable<User>;
+
+  queryUsers(request: Observable<PaginationDto>, metadata: Metadata, ...rest: any): Observable<Users>;
 }
 
 export interface UsersServiceController {
-  createUser(request: CreateUserDto): Promise<User> | Observable<User> | User;
+  createUser(request: CreateUserDto, metadata: Metadata, ...rest: any): Promise<User> | Observable<User> | User;
 
-  login(request: LoginDto): Promise<UserAndToken> | Observable<UserAndToken> | UserAndToken;
+  login(
+    request: LoginDto,
+    metadata: Metadata,
+    ...rest: any
+  ): Promise<UserAndToken> | Observable<UserAndToken> | UserAndToken;
 
-  findAllUsers(request: Empty): Promise<Users> | Observable<Users> | Users;
+  refreshToken(
+    request: Empty,
+    metadata: Metadata,
+    ...rest: any
+  ): Promise<ResRefreshToken> | Observable<ResRefreshToken> | ResRefreshToken;
 
-  findOneUser(request: FindOneUserDto): Promise<User> | Observable<User> | User;
+  findAllUsers(request: Empty, metadata: Metadata, ...rest: any): Promise<Users> | Observable<Users> | Users;
 
-  removeUser(request: FindOneUserDto): Promise<User> | Observable<User> | User;
+  findOneUser(request: FindOneUserDto, metadata: Metadata, ...rest: any): Promise<User> | Observable<User> | User;
 
-  queryUsers(request: Observable<PaginationDto>): Observable<Users>;
+  removeUser(request: FindOneUserDto, metadata: Metadata, ...rest: any): Promise<User> | Observable<User> | User;
+
+  queryUsers(request: Observable<PaginationDto>, metadata: Metadata, ...rest: any): Observable<Users>;
 }
 
 export function UsersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createUser", "login", "findAllUsers", "findOneUser", "removeUser"];
+    const grpcMethods: string[] = ["createUser", "login", "refreshToken", "findAllUsers", "findOneUser", "removeUser"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UsersService", method)(constructor.prototype[method], method, descriptor);

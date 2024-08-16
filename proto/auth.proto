@@ -5,6 +5,7 @@ package auth;
 service UsersService {
   rpc CreateUser (CreateUserDto) returns (User) {}
   rpc Login (LoginDto) returns (UserAndToken) {}
+  rpc refreshToken (Empty) returns (ResRefreshToken) {}
   rpc FindAllUsers (Empty) returns (Users) {}
   rpc FindOneUser (FindOneUserDto) returns (User) {}
   rpc RemoveUser (FindOneUserDto) returns (User) {}
@@ -30,6 +31,11 @@ message UserAndToken {
   User user = 1;
   string accessTokenCookie = 2;
   string refreshTokenCookie = 3;
+}
+
+message ResRefreshToken {
+  User user = 1;
+  string accessTokenCookie = 2;
 }
 
 message CreateUserDto {
