@@ -10,6 +10,10 @@ export abstract class BaseServiceAbstract<T extends HasId>
     return await this.repository.create(document);
   }
 
+  public async save(entity: T): Promise<T> {
+    return await this.repository.save(entity);
+  }
+
   async findOneBy(filterQuery: FindOneOptions<T>): Promise<T> {
     return await this.repository.findOneBy(filterQuery);
   }

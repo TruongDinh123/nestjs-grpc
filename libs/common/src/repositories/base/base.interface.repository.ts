@@ -3,6 +3,8 @@ import { DeepPartial, FindOneOptions } from 'typeorm';
 export interface BaseRepositoryInterface<T> {
   create(data: DeepPartial<T>): Promise<T>;
 
+  save(entity: T): Promise<T>;
+
   findOneBy(filterQuery: FindOneOptions<T>): Promise<T>;
 
   findOneAndUpdate(

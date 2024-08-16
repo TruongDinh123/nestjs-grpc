@@ -7,6 +7,7 @@ export interface Write<T> {
 
 export interface Read<T> {
   findOneBy(filterQuery: FindOneOptions<T>): Promise<T>;
+  save(entity: T): Promise<T>;
 }
 
 export interface BaseServiceInterface<T> extends Write<T>, Read<T> {}

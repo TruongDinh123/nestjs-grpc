@@ -1,4 +1,9 @@
-import { Controller, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  HttpCode,
+  SerializeOptions,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
   UsersServiceController,
@@ -9,17 +14,23 @@ import {
   RegisterDto,
   LoginDto,
   UserAndToken,
+  ResRefreshToken,
 } from '@app/common';
 import { Observable } from 'rxjs';
+import JwtRefreshGuard from './jwt-refresh.guard';
+import { CurrentUser } from '@app/common/decorators/current-user.decorator';
+import UserEntity from '@app/common/entities/user.entity';
 
 @Controller()
 @UsersServiceControllerMethods()
+@SerializeOptions({
+  strategy: 'excludeAll',
+})
 export class UsersController implements UsersServiceController {
   constructor(private readonly usersService: UsersService) {}
 
   @HttpCode(200)
   async login(request: LoginDto): Promise<UserAndToken> {
-    console.log('🚀 ~ request:', request);
     const user = await this.usersService.getAuthenticatedUser(
       request.email,
       request.password,
@@ -32,10 +43,6 @@ export class UsersController implements UsersServiceController {
     const { cookie: refreshTokenCookie, token: refreshToken } =
       this.usersService.getCookieWithJwtRefreshToken(user.id);
 
-    // RequestWithUser.res?.setHeader('Set-Cookie', [
-    //   accessTokenCookie,
-    //   refreshTokenCookie,
-    // ]);
     await this.usersService.setCurrentRefreshToken(refreshToken, user.id);
 
     return {
@@ -43,6 +50,17 @@ export class UsersController implements UsersServiceController {
       accessTokenCookie,
       refreshTokenCookie,
     };
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  async refreshToken(
+    @CurrentUser() request: UserEntity,
+  ): Promise<ResRefreshToken> {
+    const accessTokenCookie = this.usersService.getCookieWithJwtAccessToken(
+      request.id,
+    );
+    console.log('🚀 ~ accessTokenCookie:', accessTokenCookie);
+    return { user: request, accessTokenCookie };
   }
 
   async createUser(createUserDto: RegisterDto): Promise<User> {

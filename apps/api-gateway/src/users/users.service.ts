@@ -21,27 +21,31 @@ export class UsersService implements OnModuleInit {
       this.client.getService<UsersServiceClient>(USERS_SERVICE_NAME);
   }
 
-  login(loginDto: LoginDto) {
-    return this.usersService.login(loginDto);
+  login(loginDto: LoginDto, metadata: any) {
+    return this.usersService.login(loginDto, metadata);
   }
 
-  create(createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
+  refreshToken({}, metadata: any) {
+    return this.usersService.refreshToken({}, metadata);
   }
 
-  findAll() {
-    return this.usersService.findAllUsers({});
+  create(createUserDto: CreateUserDto, metadata: any) {
+    return this.usersService.createUser(createUserDto, metadata);
   }
 
-  findOne(id: number) {
-    return this.usersService.findOneUser({ id });
+  findAll(metadata: any) {
+    return this.usersService.findAllUsers({}, metadata);
   }
 
-  remove(id: number) {
-    return this.usersService.removeUser({ id });
+  findOne(id: number, metadata: any) {
+    return this.usersService.findOneUser({ id }, metadata);
   }
 
-  emailUsers() {
+  remove(id: number, metadata: any) {
+    return this.usersService.removeUser({ id }, metadata);
+  }
+
+  emailUsers(metadata: any) {
     const users$ = new ReplaySubject<PaginationDto>();
 
     users$.next({ page: 0, skip: 25 });
@@ -53,7 +57,7 @@ export class UsersService implements OnModuleInit {
 
     let chunkNumber = 1;
 
-    this.usersService.queryUsers(users$).subscribe((users) => {
+    this.usersService.queryUsers(users$, metadata).subscribe((users) => {
       console.log('Chunk', chunkNumber, users);
       chunkNumber += 1;
     });
