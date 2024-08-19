@@ -12,7 +12,6 @@ export class SetCookieInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
     const response = ctx.getResponse();
-    console.log('🚀 ~ response:', response);
 
     return next.handle().pipe(
       tap((user) => {

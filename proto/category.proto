@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package category;
+import "common.proto";
+
+service CategoryService {
+  rpc CreateCategory(CreateCategoryRequest) returns (common.Category);
+}
+
+message CreateCategoryRequest {
+  string name = 1;
+}

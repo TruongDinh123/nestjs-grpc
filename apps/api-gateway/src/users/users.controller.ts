@@ -10,13 +10,14 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { LoginDto, RegisterDto, User, UserAndToken } from '@app/common';
+import { LoginDto, RegisterDto, UserAndToken } from '@app/common';
 import { ICustomResponse } from '../interfaces/custom-response.interface';
 import { lastValueFrom } from 'rxjs';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { CookieMetadata } from '../decorators/use-cookie.decorator';
 import { Metadata } from '@grpc/grpc-js';
+import { User } from '@app/common/types/common';
 
 @Controller('users')
 export class UsersController {
@@ -65,7 +66,7 @@ export class UsersController {
   @Get('refresh-token')
   async refreshToken(
     @Req() request: Request,
-    @CookieMetadata() metadata: Metadata,
+    @CookieMetadata('Refresh') metadata: Metadata,
   ) {
     try {
       const result = await lastValueFrom(

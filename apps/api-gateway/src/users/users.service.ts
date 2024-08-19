@@ -34,15 +34,15 @@ export class UsersService implements OnModuleInit {
   }
 
   findAll(metadata: any) {
-    return this.usersService.findAllUsers({}, metadata);
+    return;
   }
 
   findOne(id: number, metadata: any) {
-    return this.usersService.findOneUser({ id }, metadata);
+    return;
   }
 
   remove(id: number, metadata: any) {
-    return this.usersService.removeUser({ id }, metadata);
+    return;
   }
 
   emailUsers(metadata: any) {

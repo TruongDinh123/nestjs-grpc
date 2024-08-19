@@ -2,12 +2,13 @@
 // versions:
 //   protoc-gen-ts_proto  v1.181.1
 //   protoc               v3.20.3
-// source: proto/auth.proto
+// source: auth.proto
 
 /* eslint-disable */
 import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
+import { Address, User } from "./common";
 
 export const protobufPackage = "auth";
 
@@ -44,20 +45,12 @@ export interface CreateUserDto {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+  address: Address | undefined;
 }
 
 export interface LoginDto {
   email: string;
   password: string;
-}
-
-export interface User {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  currentHashedRefreshToken?: string | undefined;
 }
 
 export interface SocialMedia {
@@ -73,14 +66,6 @@ export interface UsersServiceClient {
   login(request: LoginDto, metadata: Metadata, ...rest: any): Observable<UserAndToken>;
 
   refreshToken(request: Empty, metadata: Metadata, ...rest: any): Observable<ResRefreshToken>;
-
-  findAllUsers(request: Empty, metadata: Metadata, ...rest: any): Observable<Users>;
-
-  findOneUser(request: FindOneUserDto, metadata: Metadata, ...rest: any): Observable<User>;
-
-  removeUser(request: FindOneUserDto, metadata: Metadata, ...rest: any): Observable<User>;
-
-  queryUsers(request: Observable<PaginationDto>, metadata: Metadata, ...rest: any): Observable<Users>;
 }
 
 export interface UsersServiceController {
@@ -97,24 +82,16 @@ export interface UsersServiceController {
     metadata: Metadata,
     ...rest: any
   ): Promise<ResRefreshToken> | Observable<ResRefreshToken> | ResRefreshToken;
-
-  findAllUsers(request: Empty, metadata: Metadata, ...rest: any): Promise<Users> | Observable<Users> | Users;
-
-  findOneUser(request: FindOneUserDto, metadata: Metadata, ...rest: any): Promise<User> | Observable<User> | User;
-
-  removeUser(request: FindOneUserDto, metadata: Metadata, ...rest: any): Promise<User> | Observable<User> | User;
-
-  queryUsers(request: Observable<PaginationDto>, metadata: Metadata, ...rest: any): Observable<Users>;
 }
 
 export function UsersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createUser", "login", "refreshToken", "findAllUsers", "findOneUser", "removeUser"];
+    const grpcMethods: string[] = ["createUser", "login", "refreshToken"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UsersService", method)(constructor.prototype[method], method, descriptor);
     }
-    const grpcStreamMethods: string[] = ["queryUsers"];
+    const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcStreamMethod("UsersService", method)(constructor.prototype[method], method, descriptor);

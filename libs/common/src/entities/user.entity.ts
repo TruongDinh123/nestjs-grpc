@@ -1,5 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Address } from './adress.entity';
+import { PostEntity } from './post.entity';
 
 @Entity()
 class UserEntity {
@@ -24,6 +33,16 @@ class UserEntity {
   @Column({ nullable: true })
   @Exclude()
   public password: string;
+
+  @OneToOne(() => Address, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinColumn()
+  public address: Address;
+
+  @OneToMany(() => PostEntity, (post: PostEntity) => post.author)
+  public posts: PostEntity[];
 
   @Column({ default: false })
   public isRegisteredWithGoogle: boolean;

@@ -16,6 +16,8 @@ export interface BaseRepositoryInterface<T> {
 
   findOneAndDelete(filterQuery: FindOneOptions<T>): Promise<T>;
 
+  findByIds(ids: number[]): Promise<T[]>;
+
   preload(entityLike: DeepPartial<T>): Promise<T>;
 }
 

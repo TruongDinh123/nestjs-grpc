@@ -1,7 +1,9 @@
-import { CreateUserDto } from '@app/common';
+import { Address, CreateUserDto } from '@app/common';
 import {
   IsEmail,
   IsNotEmpty,
+  IsObject,
+  IsOptional,
   IsString,
   Matches,
   MinLength,
@@ -23,6 +25,10 @@ export class RegisterDto implements CreateUserDto {
   @IsNotEmpty()
   @MinLength(7)
   password: string;
+
+  @IsOptional()
+  @IsObject()
+  address: Address;
 
   @IsString()
   @IsNotEmpty()
