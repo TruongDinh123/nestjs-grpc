@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package post;
+import "common.proto";
+
+service PostService {
+    rpc CreatePost(CreatePostRequest) returns (common.Post);
+}
+
+message CategoryId {
+    int32 id = 1;
+}
+
+message CreatePostRequest {
+    string title = 1;
+    string content = 2;
+    repeated CategoryId categories = 3;
+}

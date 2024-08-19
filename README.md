@@ -1,4 +1,4 @@
-npx protoc --plugin=protoc-gen-ts_proto=".\\node_modules\\.bin\\protoc-gen-ts_proto.cmd" --ts_proto_out=./ --ts_proto_opt=nestJs=true ./proto/auth.proto
+ npx protoc --plugin=protoc-gen-ts_proto=".\\node_modules\\.bin\\protoc-gen-ts_proto.cmd" --ts_proto_out="E:\nestjs-grpc\libs\common\src\types\proto" --ts_proto_opt="nestJs=true,addGrpcMetadata=true,addNestjsRestParameter=true" --proto_path="./proto" ./proto/auth.proto ./proto/common.proto ./proto/post.proto
 
 nest generated apps auth
 

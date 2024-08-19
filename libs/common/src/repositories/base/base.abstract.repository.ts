@@ -61,6 +61,10 @@ export abstract class BaseRepositoryAbstract<TDocument extends HasId>
     return document;
   }
 
+  async findByIds(ids: number[]): Promise<TDocument[]> {
+    return await this.repository.findByIds(ids);
+  }
+
   async findOneAndUpdate(
     filterQuery: FindOneOptions<TDocument>, // Sử dụng FindOneOptions
     update: DeepPartial<TDocument>, // Sử dụng DeepPartial
