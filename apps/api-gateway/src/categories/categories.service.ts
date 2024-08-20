@@ -19,4 +19,8 @@ export class CategoriesService implements OnModuleInit {
   create(createCategoryDto: CreateCategoryRequest, metadata: any) {
     return this.categoriesService.createCategory(createCategoryDto, metadata);
   }
+
+  getCategories({}, metadata: any) {
+    return this.categoriesService.getAllCategories({}, metadata);
+  }
 }

@@ -16,8 +16,11 @@ export interface Post {
 }
 
 export interface Category {
-  id: string;
+  id: number;
   name: string;
+}
+
+export interface Empty {
 }
 
 export interface User {

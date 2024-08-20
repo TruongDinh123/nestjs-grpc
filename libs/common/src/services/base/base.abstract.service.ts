@@ -18,6 +18,10 @@ export abstract class BaseServiceAbstract<T extends HasId>
     return await this.repository.findOneBy(filterQuery);
   }
 
+  async findAll(): Promise<T[]> {
+    return await this.repository.findAll();
+  }
+
   public async preload(entityLike: DeepPartial<T>): Promise<T> {
     return await this.repository.preload(entityLike);
   }
