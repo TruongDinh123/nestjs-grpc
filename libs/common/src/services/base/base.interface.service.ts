@@ -7,6 +7,7 @@ export interface Write<T> {
 
 export interface Read<T> {
   findOneBy(filterQuery: FindOneOptions<T>): Promise<T>;
+  findAll(): Promise<T[]>;
   save(entity: T): Promise<T>;
 }
 

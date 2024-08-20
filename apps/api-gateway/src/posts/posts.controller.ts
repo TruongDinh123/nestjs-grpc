@@ -17,10 +17,12 @@ export class PostsController {
     const result = await lastValueFrom(
       this.postsService.createPost(createPostDto, metadata),
     );
-    console.log('🚀 ~ result:', result);
     return {
       message: 'Tạo bài viết thành công',
-      result: result,
+      result: {
+        ...result,
+        categories: createPostDto.categories,
+      },
     };
   }
 }

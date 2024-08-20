@@ -21,13 +21,14 @@ export class PostsService
   onModuleInit() {}
 
   async createPost(createPostDto: CreatePostDto, user: UserEntity) {
-    const categoryIds = createPostDto.categories.map((cat) => cat.id);
-    const categories = await this.categories_repository.findByIds(categoryIds);
+    console.log('🚀 ~ createPostDto:', createPostDto);
+    // const categoryIds = createPostDto.categories.map((cat) => cat.id);
+    // const categories = await this.categories_repository.findByIds(categoryIds);
     const newPost = await this.posts_repository.create({
       ...createPostDto,
       author: user,
-      categories,
     });
+    console.log('🚀 ~ newPost:', newPost);
     return newPost;
   }
 }
