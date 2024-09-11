@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package product;
+
+service ProductService {
+  rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
+}
+
+enum ProductType {
+  CLOTHING = 0;
+  ELECTRONICS = 1;
+}
+
+message CreateProductRequest {
+  string name = 1;
+  string thumbnail = 2;
+  double price = 3;
+  string description = 4;
+  int32 quantity = 5;
+  ProductType product_type = 6;
+  map<string, string> attribute = 7;
+}
+
+message ProductResponse {
+  int32 id = 1;
+  string name = 2;
+  string thumbnail = 3;
+  double price = 4;
+  string description = 5;
+  int32 quantity = 6;
+  string slug = 7;
+  ProductType product_type = 8;
+  map<string, string> attributes = 9;
+  double rating_average = 10;
+  bool is_published = 11;
+}

@@ -1,5 +1,6 @@
 import {
   CreatePostRequest,
+  GetPostsWithAuthorIdRequest,
   POST_SERVICE_NAME,
   PostServiceClient,
 } from '@app/common/types/post';
@@ -18,7 +19,10 @@ export class PostsService implements OnModuleInit {
   }
 
   createPost(createPostDto: CreatePostRequest, metadata: any) {
-    console.log('🚀 ~ createPostDto:', createPostDto);
     return this.postsService.createPost(createPostDto, metadata);
+  }
+
+  getPostsByAuthorId(dto: GetPostsWithAuthorIdRequest, metadata: any) {
+    return this.postsService.getPostsByAuthorId(dto, metadata);
   }
 }

@@ -1,4 +1,7 @@
-import { POST_SERVICE_NAME } from '@app/common/types/post';
+import {
+  GetPostsWithAuthorIdResponse,
+  POST_SERVICE_NAME,
+} from '@app/common/types/post';
 import { Body, Controller, UseGuards } from '@nestjs/common';
 import JwtAuthenticationGuard from '../guard/jwt-authentication.guard';
 import { CreatePostDto } from './dto/createPost.dto';
@@ -20,5 +23,16 @@ export class PostsController {
   ): Promise<Post> {
     const result = await this.postsService.createPost(createPostDto, user);
     return result;
+  }
+
+  @GrpcMethod(POST_SERVICE_NAME, 'GetPostsByAuthorId')
+  @UseGuards(JwtAuthenticationGuard)
+  async getPostsByAuthorId(
+    @CurrentUser() user: UserEntity,
+  ): Promise<GetPostsWithAuthorIdResponse> {
+    const posts = await this.postsService.getPostsByAuthorId({
+      authorId: user.id,
+    });
+    return posts;
   }
 }

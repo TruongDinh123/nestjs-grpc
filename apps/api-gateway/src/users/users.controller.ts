@@ -8,6 +8,7 @@ import {
   Res,
   Req,
   InternalServerErrorException,
+  SerializeOptions,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { LoginDto, RegisterDto, UserAndToken } from '@app/common';
@@ -20,6 +21,9 @@ import { Metadata } from '@grpc/grpc-js';
 import { User } from '@app/common/types/common';
 
 @Controller('users')
+@SerializeOptions({
+  strategy: 'exposeAll',
+})
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -43,11 +47,10 @@ export class UsersController {
   @Post('log-in')
   async login(
     @Body() loginDto: LoginDto,
-    @CookieMetadata() metadata: Metadata,
     @Res({ passthrough: true }) response: Response,
   ): Promise<ICustomResponse<UserAndToken>> {
     const result = await lastValueFrom(
-      this.usersService.login(loginDto, metadata),
+      this.usersService.login(loginDto, new Metadata()),
     );
 
     delete result.user.password;

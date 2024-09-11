@@ -1,4 +1,5 @@
 import { Address, CreateUserDto } from '@app/common';
+import { Exclude } from 'class-transformer';
 import {
   IsEmail,
   IsNotEmpty,
@@ -24,6 +25,7 @@ export class RegisterDto implements CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(7)
+  @Exclude()
   password: string;
 
   @IsOptional()

@@ -9,6 +9,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Address } from './adress.entity';
 import { PostEntity } from './post.entity';
+import { Product } from './product.entity';
 
 @Entity()
 class UserEntity {
@@ -40,6 +41,9 @@ class UserEntity {
   })
   @JoinColumn()
   public address: Address;
+
+  @OneToMany(() => Product, (product: Product) => product.account)
+  public products: Product[];
 
   @OneToMany(() => PostEntity, (post: PostEntity) => post.author)
   public posts: PostEntity[];
