@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostRequest } from '@app/common/types/post';
 import { CookieMetadata } from '../decorators/use-cookie.decorator';
@@ -23,6 +23,20 @@ export class PostsController {
         ...result,
         categories: createPostDto.categories,
       },
+    };
+  }
+
+  @Get(':authorId')
+  async GetPostsByAuthorId(
+    @CookieMetadata('Authentication') metadata: Metadata,
+    @Query('authorId') authorId: number,
+  ) {
+    const result = await lastValueFrom(
+      this.postsService.getPostsByAuthorId({ authorId }, metadata),
+    );
+    return {
+      message: 'Lấy danh sách bài viết thành công',
+      result: result,
     };
   }
 }

@@ -22,19 +22,39 @@ export interface CreatePostRequest {
   categories: CategoryId[];
 }
 
+export interface GetPostsWithAuthorIdRequest {
+  authorId: number;
+}
+
+export interface GetPostsWithAuthorIdResponse {
+  posts: Post[];
+}
+
 export const POST_PACKAGE_NAME = "post";
 
 export interface PostServiceClient {
   createPost(request: CreatePostRequest, metadata: Metadata, ...rest: any): Observable<Post>;
+
+  getPostsByAuthorId(
+    request: GetPostsWithAuthorIdRequest,
+    metadata: Metadata,
+    ...rest: any
+  ): Observable<GetPostsWithAuthorIdResponse>;
 }
 
 export interface PostServiceController {
   createPost(request: CreatePostRequest, metadata: Metadata, ...rest: any): Promise<Post> | Observable<Post> | Post;
+
+  getPostsByAuthorId(
+    request: GetPostsWithAuthorIdRequest,
+    metadata: Metadata,
+    ...rest: any
+  ): Promise<GetPostsWithAuthorIdResponse> | Observable<GetPostsWithAuthorIdResponse> | GetPostsWithAuthorIdResponse;
 }
 
 export function PostServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createPost"];
+    const grpcMethods: string[] = ["createPost", "getPostsByAuthorId"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("PostService", method)(constructor.prototype[method], method, descriptor);

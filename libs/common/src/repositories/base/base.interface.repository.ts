@@ -14,6 +14,8 @@ export interface BaseRepositoryInterface<T> {
 
   find(filterQuery: FindOneOptions<T>): Promise<T[]>;
 
+  findBy(filterQuery: FindOneOptions<T>): Promise<T[]>;
+
   findAll(): Promise<T[]>;
 
   findOneAndDelete(filterQuery: FindOneOptions<T>): Promise<T>;

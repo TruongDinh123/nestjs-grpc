@@ -94,6 +94,10 @@ export abstract class BaseRepositoryAbstract<TDocument extends HasId>
     return await this.repository.find();
   }
 
+  async findBy(filterQuery: FindOneOptions<TDocument>): Promise<TDocument[]> {
+    return await this.repository.find(filterQuery);
+  }
+
   async findOneAndDelete(
     filterQuery: FindOneOptions<TDocument>,
   ): Promise<TDocument> {

@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -20,6 +21,7 @@ export class PostEntity {
   @Column()
   public content: string;
 
+  @Index('post_authorid_index')
   @ManyToOne(() => UserEntity, (user) => user.posts)
   public author: UserEntity;
 
