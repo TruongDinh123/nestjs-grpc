@@ -17,6 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           entities: [__dirname + '/../../entities/**/*.entity.{js,ts}'],
           logging: ['error'],
           synchronize: true,
+          entityPrefix: '',
           extra: {
             trustServerCertificate: true,
           },

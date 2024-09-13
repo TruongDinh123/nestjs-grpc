@@ -42,11 +42,8 @@ export class Product {
   @Column()
   slug: string;
 
-  @Column({
-    type: 'enum',
-    enum: ProductType,
-  })
-  productType: ProductType;
+  @Column()
+  productType: string;
 
   @ManyToOne(() => UserEntity, (user) => user.products)
   @JoinColumn({ name: 'accountId' })
@@ -69,30 +66,17 @@ export class Product {
 
   @BeforeInsert()
   generateSlug() {
-    this.slug = slugify(this.name, { lower: true });
+    if (this.name && typeof this.name === 'string') {
+      this.slug = slugify(this.name, { lower: true });
+    } else {
+      console.error('Invalid product name:', this.name);
+      throw new Error('Invalid product name for slug generation');
+    }
   }
 
   get formattedPrice(): string {
     return `${this.price.toFixed(2)}`;
   }
-}
-
-@ChildEntity()
-export class Electronics extends Product {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  brand: string;
-
-  @Column()
-  model: string;
-
-  @Column()
-  manufacturer: string;
-
-  @Column()
-  color: string;
 }
 
 @ChildEntity()
