@@ -14,8 +14,12 @@ export class ProductsService implements OnModuleInit {
   onModuleInit() {
     this.productsService =
       this.client.getService<ProductServiceClient>(PRODUCT_SERVICE_NAME);
+    console.log('ProductService initialized:', !!this.productsService);
+    console.log('Available methods:', Object.keys(this.productsService));
   }
-  create(createProductDto: CreateProductRequest, metadata: any) {
+
+  createProduct(createProductDto: CreateProductRequest, metadata: any) {
+    console.log('Attempting to create product:', createProductDto);
     return this.productsService.createProduct(createProductDto, metadata);
   }
 }

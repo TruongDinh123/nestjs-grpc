@@ -1,6 +1,9 @@
-import { ProductType } from '@app/common/entities/product.entity';
-import { IsString, IsNotEmpty, IsNumber, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
+export enum ProductType {
+  Clothing = 'Clothing',
+  Electronics = 'Electronics',
+}
 export class ProductDto {
   id: number;
 
@@ -23,9 +26,9 @@ export class ProductDto {
   @IsNotEmpty()
   quantity: number;
 
-  @IsEnum(ProductType)
+  @IsString()
   @IsNotEmpty()
-  productType: ProductType;
+  productType: string;
 
   account?: any; // Thay đổi kiểu dữ liệu phù hợp
 

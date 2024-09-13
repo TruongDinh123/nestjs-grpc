@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import * as Joi from 'joi';
+import { ProductsModule } from './products/product.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import * as Joi from 'joi';
     }),
     UsersModule,
     PostsModule,
+    ProductsModule,
     CategoriesModule,
   ],
   controllers: [],

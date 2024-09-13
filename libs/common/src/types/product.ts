@@ -23,11 +23,11 @@ export interface CreateProductRequest {
   price: number;
   description: string;
   quantity: number;
-  productType: ProductType;
-  attribute: { [key: string]: string };
+  productType: string;
+  attributes: { [key: string]: string };
 }
 
-export interface CreateProductRequest_AttributeEntry {
+export interface CreateProductRequest_AttributesEntry {
   key: string;
   value: string;
 }

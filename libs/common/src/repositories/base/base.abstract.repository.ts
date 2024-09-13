@@ -27,6 +27,7 @@ export abstract class BaseRepositoryAbstract<TDocument extends HasId>
 
 */
   async create(data: DeepPartial<TDocument>): Promise<TDocument> {
+    console.log('🚀 ~ ProductRepository create - Input:', data);
     const createdDocument = await this.repository.create(data);
     return await this.save(createdDocument);
   }

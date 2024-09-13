@@ -17,8 +17,8 @@ message CreateProductRequest {
   double price = 3;
   string description = 4;
   int32 quantity = 5;
-  ProductType product_type = 6;
-  map<string, string> attribute = 7;
+  string productType = 6;
+  map<string, string> attributes = 7;
 }
 
 message ProductResponse {
@@ -29,7 +29,7 @@ message ProductResponse {
   string description = 5;
   int32 quantity = 6;
   string slug = 7;
-  ProductType product_type = 8;
+  ProductType productType = 8;
   map<string, string> attributes = 9;
   double rating_average = 10;
   bool is_published = 11;

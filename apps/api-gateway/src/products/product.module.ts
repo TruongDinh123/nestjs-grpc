@@ -7,7 +7,7 @@ import {
   PRODUCT_SERVICE_NAME,
 } from '@app/common/types/product';
 import { ProductController } from './product.controller';
-import { ProductService } from 'apps/auth/src/products/product.service';
+import { ProductsService } from './product.service';
 
 @Module({
   imports: [
@@ -29,6 +29,6 @@ import { ProductService } from 'apps/auth/src/products/product.service';
     ]),
   ],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductsService],
 })
 export class ProductsModule {}
