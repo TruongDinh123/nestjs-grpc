@@ -1,14 +1,10 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import {
   ClothingRepositoryInterface,
   ProductRepositoryInterface,
 } from './product.interface';
-import { BaseServiceAbstract } from '@app/common';
-import {
-  Clothing,
-  Electronics,
-  Product,
-} from '@app/common/entities/product.entity';
+import { BaseServiceAbstract, GrpcException } from '@app/common';
+import { Clothing, Product } from '@app/common/entities/product.entity';
 import ProductDto from './product.dto';
 
 @Injectable()
@@ -39,7 +35,7 @@ class ProductFactory
   async createProduct(
     type: string,
     createProductDto: ProductDto,
-  ): Promise<Product | Electronics | Clothing> {
+  ): Promise<Product> {
     console.log(`Attempting to create product of type: ${type}`);
     console.log('Current product registry:', ProductFactory.productRegistry);
     const productClass = ProductFactory.productRegistry[type];
@@ -67,7 +63,7 @@ class ProductService {
   async createProduct(
     createProductDto: ProductDto,
     product_id?: number,
-  ): Promise<Product | Electronics | Clothing> {
+  ): Promise<Product | Clothing> {
     console.log(
       '🚀 ~ ProductService createProduct - Input::',
       createProductDto,
@@ -88,23 +84,47 @@ class ClothingService extends ProductService {
       '🚀 ~ ClothingService createProduct - Input::',
       createProductDto,
     );
-    const { attributes, ...productData } = createProductDto;
+    // const { attributes, ...productData } = createProductDto;
 
-    const clothingData = {
-      ...productData,
-      attributes: attributes,
-      brand: attributes.brand,
-      size: attributes.size,
-      color: attributes.color,
-      material: attributes.material,
+    // const clothingData = {
+    //   ...productData,
+    //   id: productData.id,
+    //   attributes: attributes,
+    //   brand: attributes.brand,
+    //   size: attributes.size,
+    //   color: attributes.color,
+    //   material: attributes.material,
+    // };
+
+    const newClothing = await this.clothingRepository.create({
+      ...createProductDto.attributes,
+      account: createProductDto.account,
+    });
+
+    if (!newClothing) {
+      throw new GrpcException({
+        status: HttpStatus.NOT_FOUND,
+        message: 'Failed to create clothing',
+      });
+    }
+
+    const productData = {
+      ...createProductDto,
+      product_id: newClothing.id,
+      account: createProductDto.account,
     };
+    console.log('🚀 ~ productData:', productData);
 
-    const newClothing = await this.clothingRepository.create(clothingData);
+    const newProduct = await super.createProduct(productData);
     console.log(
-      'ClothingService createProduct - Result:',
-      JSON.stringify(newClothing, null, 2),
+      '🚀 ~ ClothingService and newProduct createProduct - Result::',
+      {
+        ...newProduct,
+        ...newClothing,
+      },
     );
-    return newClothing;
+
+    return newProduct;
   }
 }
 
