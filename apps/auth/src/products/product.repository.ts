@@ -3,15 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductRepositoryInterface } from './product.interface';
-import {
-  Clothing,
-  Electronics,
-  Product,
-} from '@app/common/entities/product.entity';
+import { Product } from '@app/common/entities/product.entity';
 
 @Injectable()
 export class ProductRepository
-  extends BaseRepositoryAbstract<Product | Electronics | Clothing>
+  extends BaseRepositoryAbstract<Product>
   implements ProductRepositoryInterface
 {
   constructor(

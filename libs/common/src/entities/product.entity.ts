@@ -1,6 +1,5 @@
 import {
   BeforeInsert,
-  ChildEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -45,6 +44,9 @@ export class Product {
   @Column()
   productType: string;
 
+  @Column()
+  product_id: number;
+
   @ManyToOne(() => UserEntity, (user) => user.products)
   @JoinColumn({ name: 'accountId' })
   account: UserEntity;
@@ -79,8 +81,8 @@ export class Product {
   }
 }
 
-@ChildEntity()
-export class Clothing extends Product {
+@Entity('clothings')
+export class Clothing {
   @PrimaryGeneratedColumn()
   id: number;
 
